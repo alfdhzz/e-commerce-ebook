@@ -110,6 +110,35 @@
       </p>
     </div>
 
+    <!-- Gate Login jika Belum Masuk / Sedang Login Admin -->
+    <section id="checkout-auth-gate" class="hidden bg-white border border-[#E5E7EB] rounded-2xl p-8 sm:p-14 text-center max-w-xl mx-auto my-8">
+      <div class="w-14 h-14 rounded-2xl bg-signature-soft border border-[#E5E7EB] flex items-center justify-center mx-auto mb-5 text-[#111827]">
+        <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+        </svg>
+      </div>
+      <h2 id="checkout-gate-title" class="font-editorial text-2xl font-semibold text-[#111827] mb-2">
+        Masuk untuk Mengakses Keranjang &amp; Checkout
+      </h2>
+      <p id="checkout-gate-desc" class="text-sm text-[#4B5563] leading-relaxed mb-6">
+        Untuk menambahkan e-book ke keranjang dan melanjutkan pembayaran, silakan masuk atau daftar akun Customer terlebih dahulu.
+      </p>
+      <div id="checkout-gate-actions" class="flex flex-wrap items-center justify-center gap-3">
+        <a
+          href="login.html?next=checkout.html"
+          class="inline-flex items-center justify-center px-6 py-3 rounded-xl text-sm font-semibold bg-[#111827] text-white hover:bg-[#1F2937] transition-colors"
+        >
+          Masuk / Daftar Customer
+        </a>
+        <a
+          href="index.html"
+          class="inline-flex items-center justify-center px-5 py-3 rounded-xl text-sm font-semibold bg-white text-[#111827] border border-[#E5E7EB] hover:bg-gray-50 transition-colors"
+        >
+          Kembali ke Katalog
+        </a>
+      </div>
+    </section>
+
     <!-- Empty State Keranjang Kosong -->
     <section id="checkout-empty" class="hidden bg-white border border-[#E5E7EB] rounded-2xl p-10 sm:p-14 text-center max-w-xl mx-auto my-8">
       <div class="w-14 h-14 rounded-2xl bg-signature-soft border border-[#E5E7EB] flex items-center justify-center mx-auto mb-5 text-[#111827]">

@@ -9,6 +9,7 @@
 
   const STORAGE_KEYS = {
     CART: 'titikbaca_cart_v1',
+    CART_BY_USER: 'titikbaca_cart_by_user_v1',
     OWNED: 'titikbaca_owned_v1',
     OWNED_BY_USER: 'titikbaca_owned_by_user_v1',
     PROMO: 'titikbaca_promo_v1',
@@ -356,11 +357,19 @@
 
   const isOwned = (bookId) => Boolean(getOwnedRecord(bookId));
 
+  const readCartMap = () => {
+    const raw = readStorage(STORAGE_KEYS.CART_BY_USER, {});
+    return raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {};
+  };
+
   const getCart = () => {
-    const raw = readStorage(STORAGE_KEYS.CART, []);
+    if (!isCustomer()) return [];
+    const userId = getCurrentUser().id;
+    const map = readCartMap();
+    const raw = map[userId];
     if (!Array.isArray(raw)) return [];
     const validIds = new Set(getBooks().map((b) => b.id));
-    const ownedIds = new Set(getOwnedBooks().map((e) => e.bookId));
+    const ownedIds = new Set(getOwnedBooks(userId).map((e) => e.bookId));
     // Dedup & pastikan buku yang sudah dibeli tidak muncul lagi di keranjang
     const seen = new Set();
     const cleaned = [];
@@ -378,20 +387,29 @@
   const addToCart = (bookId) => {
     const book = getBookById(bookId);
     if (!book) return { ok: false, reason: 'not_found' };
+    if (!isLoggedIn()) return { ok: false, reason: 'auth_required', book };
+    if (!isCustomer()) return { ok: false, reason: 'customer_only', book };
     if (isOwned(bookId)) return { ok: false, reason: 'already_owned', book };
     const cart = getCart();
     if (cart.includes(bookId)) return { ok: false, reason: 'already_in_cart', book };
 
+    const userId = getCurrentUser().id;
+    const map = readCartMap();
     const updated = [...cart, bookId];
-    writeStorage(STORAGE_KEYS.CART, updated);
+    map[userId] = updated;
+    writeStorage(STORAGE_KEYS.CART_BY_USER, map);
     UI.updateNavbarBadges();
     return { ok: true, book, count: updated.length };
   };
 
   const removeFromCart = (bookId) => {
+    if (!isCustomer()) return [];
+    const userId = getCurrentUser().id;
     const cart = getCart();
     const updated = cart.filter((id) => id !== bookId);
-    writeStorage(STORAGE_KEYS.CART, updated);
+    const map = readCartMap();
+    map[userId] = updated;
+    writeStorage(STORAGE_KEYS.CART_BY_USER, map);
     if (updated.length === 0) {
       clearPromo();
     }
@@ -400,7 +418,11 @@
   };
 
   const clearCart = () => {
-    writeStorage(STORAGE_KEYS.CART, []);
+    if (!isCustomer()) return;
+    const userId = getCurrentUser().id;
+    const map = readCartMap();
+    map[userId] = [];
+    writeStorage(STORAGE_KEYS.CART_BY_USER, map);
     UI.updateNavbarBadges();
   };
 
@@ -500,7 +522,7 @@
     const map = readOwnedMap();
     map[user.id] = [...newEntries, ...existingOwned];
     writeStorage(STORAGE_KEYS.OWNED_BY_USER, map);
-    writeStorage(STORAGE_KEYS.CART, []);
+    clearCart();
     removeStorage(STORAGE_KEYS.PROMO);
 
     writeStorage(STORAGE_KEYS.FLASH, {
@@ -532,6 +554,7 @@
 
   const resetDemoData = () => {
     removeStorage(STORAGE_KEYS.CART);
+    removeStorage(STORAGE_KEYS.CART_BY_USER);
     removeStorage(STORAGE_KEYS.OWNED);
     removeStorage(STORAGE_KEYS.OWNED_BY_USER);
     removeStorage(STORAGE_KEYS.PROMO);

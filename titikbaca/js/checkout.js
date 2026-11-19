@@ -24,6 +24,10 @@
   const els = {};
 
   const cacheDOM = () => {
+    els.authGate = document.getElementById('checkout-auth-gate');
+    els.gateTitle = document.getElementById('checkout-gate-title');
+    els.gateDesc = document.getElementById('checkout-gate-desc');
+    els.gateActions = document.getElementById('checkout-gate-actions');
     els.emptyView = document.getElementById('checkout-empty');
     els.contentView = document.getElementById('checkout-content');
     els.cartCountLabel = document.getElementById('cart-items-count');
@@ -378,6 +382,36 @@
      Master Page Render
      ------------------------------------------------------------------------ */
   const renderPage = () => {
+    const currentUser = Auth.getCurrentUser();
+
+    if (!currentUser || currentUser.role !== 'user') {
+      if (els.emptyView) els.emptyView.classList.add('hidden');
+      if (els.contentView) els.contentView.classList.add('hidden');
+      if (els.authGate) {
+        els.authGate.classList.remove('hidden');
+        if (currentUser?.role === 'admin') {
+          if (els.gateTitle) els.gateTitle.textContent = 'Fitur Belanja Khusus Customer';
+          if (els.gateDesc) {
+            els.gateDesc.textContent =
+              'Anda sedang masuk sebagai Admin. Silakan keluar dan masuk menggunakan akun Customer jika ingin menambah keranjang atau melakukan pembelian e-book.';
+          }
+          if (els.gateActions) {
+            els.gateActions.innerHTML = `
+              <a href="admin.html" class="btn-accent-gradient inline-flex items-center justify-center px-6 py-3 rounded-xl text-sm">
+                Buka Panel Admin
+              </a>
+              <a href="index.html" class="inline-flex items-center justify-center px-5 py-3 rounded-xl text-sm font-semibold bg-white border border-[#E5E7EB] text-[#111827] hover:bg-gray-50 transition-colors">
+                Kembali ke Katalog
+              </a>
+            `;
+          }
+        }
+      }
+      return;
+    }
+
+    if (els.authGate) els.authGate.classList.add('hidden');
+
     const summary = Store.getCartSummary();
 
     if (summary.count === 0) {

@@ -7,7 +7,7 @@
 (() => {
   'use strict';
 
-  const { Store, UI, CATEGORIES } = window.TitikBaca;
+  const { Auth, Store, UI, CATEGORIES } = window.TitikBaca;
 
   const state = {
     searchQuery: '',
@@ -123,38 +123,75 @@
   /* ------------------------------------------------------------------------
      Catalog Grid Rendering
      ------------------------------------------------------------------------ */
-  const renderCardActionButton = (book) => {
-    if (Store.isOwned(book.id)) {
-      return `
-        <a
-          href="koleksi.html?baca=${encodeURIComponent(book.id)}"
-          class="btn-accent-gradient flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-xs sm:text-sm text-center"
-        >
-          <span>Buka di Pustaka</span>
-        </a>
-      `;
-    }
-
-    if (Store.isInCart(book.id)) {
-      return `
-        <a
-          href="checkout.html"
-          class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-xs sm:text-sm font-semibold bg-[#EEF0FA] text-[#111827] border border-[#9FA5D5] hover:bg-[#E4E7F7] transition-colors text-center"
-          title="Lihat di halaman keranjang"
-        >
-          <span>Di Keranjang ✓</span>
-        </a>
-      `;
-    }
-
-    return `
+  const renderCardActions = (book) => {
+    const detailBtn = `
       <button
         type="button"
-        data-add-cart="${UI.escapeHTML(book.id)}"
-        class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-xs sm:text-sm font-semibold bg-[#111827] text-white hover:bg-[#1F2937] transition-colors"
+        data-open-detail="${UI.escapeHTML(book.id)}"
+        class="inline-flex items-center justify-center px-3 py-2 rounded-lg text-xs font-medium bg-white text-[#111827] border border-[#E5E7EB] hover:bg-gray-50 hover:border-gray-300 transition-colors"
       >
-        <span>+ Keranjang</span>
+        Detail
       </button>
+    `;
+
+    if (Store.isOwned(book.id)) {
+      return `
+        <div class="flex items-center gap-2">
+          <a
+            href="koleksi.html?baca=${encodeURIComponent(book.id)}"
+            class="btn-accent-gradient flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-xs sm:text-sm text-center"
+          >
+            <span>Buka di Pustaka</span>
+          </a>
+          <button
+            type="button"
+            data-open-detail="${UI.escapeHTML(book.id)}"
+            class="px-3.5 py-2.5 rounded-lg text-xs sm:text-sm font-medium bg-white text-[#111827] border border-[#E5E7EB] hover:bg-gray-50 hover:border-gray-300 transition-colors shrink-0"
+          >
+            Detail
+          </button>
+        </div>
+      `;
+    }
+
+    const inCart = Store.isInCart(book.id);
+    const cartSecondaryBtn = inCart
+      ? `
+        <a
+          href="checkout.html"
+          class="inline-flex items-center justify-center px-2.5 py-2 rounded-lg text-xs font-semibold bg-[#EEF0FA] text-[#111827] border border-[#9FA5D5] hover:bg-[#E4E7F7] transition-colors text-center whitespace-nowrap"
+          title="Sudah ada di keranjang"
+        >
+          Di Keranjang ✓
+        </a>
+      `
+      : `
+        <button
+          type="button"
+          data-add-cart="${UI.escapeHTML(book.id)}"
+          class="inline-flex items-center justify-center px-2.5 py-2 rounded-lg text-xs font-semibold bg-[#FAFAFA] text-[#111827] border border-[#E5E7EB] hover:bg-gray-100 hover:border-gray-300 transition-colors whitespace-nowrap"
+        >
+          + Keranjang
+        </button>
+      `;
+
+    return `
+      <div class="space-y-2">
+        <button
+          type="button"
+          data-buy-now="${UI.escapeHTML(book.id)}"
+          class="w-full inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-lg text-xs sm:text-sm font-semibold bg-[#111827] text-white hover:bg-[#1F2937] transition-colors"
+        >
+          <span>${inCart ? 'Lanjut Checkout' : 'Checkout'}</span>
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+          </svg>
+        </button>
+        <div class="grid grid-cols-2 gap-2">
+          ${cartSecondaryBtn}
+          ${detailBtn}
+        </div>
+      </div>
     `;
   };
 
@@ -252,16 +289,7 @@
                 </span>
               </div>
 
-              <div class="flex items-center gap-2">
-                ${renderCardActionButton(book)}
-                <button
-                  type="button"
-                  data-open-detail="${UI.escapeHTML(book.id)}"
-                  class="px-3.5 py-2.5 rounded-lg text-xs sm:text-sm font-medium bg-white text-[#111827] border border-[#E5E7EB] hover:bg-gray-50 hover:border-gray-300 transition-colors shrink-0"
-                >
-                  Detail
-                </button>
-              </div>
+              ${renderCardActions(book)}
             </div>
           </article>
         `;
@@ -284,25 +312,40 @@
       `;
     }
 
-    if (Store.isInCart(book.id)) {
-      return `
+    const inCart = Store.isInCart(book.id);
+    const cartBtn = inCart
+      ? `
         <a
           href="checkout.html"
-          class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold bg-[#EEF0FA] text-[#111827] border border-[#9FA5D5] hover:bg-[#E4E7F7] transition-colors"
+          class="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl text-sm font-semibold bg-[#EEF0FA] text-[#111827] border border-[#9FA5D5] hover:bg-[#E4E7F7] transition-colors whitespace-nowrap"
         >
-          <span>Di Keranjang ✓ — Lanjut Checkout</span>
+          <span>Di Keranjang ✓</span>
         </a>
+      `
+      : `
+        <button
+          type="button"
+          data-modal-add-cart="${UI.escapeHTML(book.id)}"
+          class="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl text-sm font-semibold bg-white text-[#111827] border border-[#E5E7EB] hover:bg-gray-50 hover:border-gray-300 transition-colors whitespace-nowrap"
+        >
+          <span>+ Keranjang</span>
+        </button>
       `;
-    }
 
     return `
-      <button
-        type="button"
-        data-modal-add-cart="${UI.escapeHTML(book.id)}"
-        class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold bg-[#111827] text-white hover:bg-[#1F2937] transition-colors"
-      >
-        <span>Tambah ke Keranjang</span>
-      </button>
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+        ${cartBtn}
+        <button
+          type="button"
+          data-buy-now="${UI.escapeHTML(book.id)}"
+          class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold bg-[#111827] text-white hover:bg-[#1F2937] transition-colors whitespace-nowrap"
+        >
+          <span>${inCart ? 'Lanjut Checkout' : 'Checkout'}</span>
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+          </svg>
+        </button>
+      </div>
     `;
   };
 
@@ -534,7 +577,7 @@
   /* ------------------------------------------------------------------------
      Actions & Event Listeners
      ------------------------------------------------------------------------ */
-  const handleAddToCart = (bookId) => {
+  const handleAddToCart = async (bookId) => {
     const result = Store.addToCart(bookId);
     if (result.ok) {
       renderCatalog();
@@ -544,6 +587,22 @@
       UI.showToast(`"${result.book.title}" ditambahkan ke keranjang.`, {
         actionLabel: 'Lihat Keranjang',
         actionHref: 'checkout.html'
+      });
+    } else if (result.reason === 'auth_required') {
+      const goLogin = await UI.confirmDialog({
+        title: 'Masuk untuk menambah ke keranjang',
+        message: `Silakan masuk atau daftar akun Customer terlebih dahulu untuk menambahkan "${result.book.title}" ke keranjang belanja Anda.`,
+        confirmLabel: 'Masuk / Daftar',
+        cancelLabel: 'Nanti Saja',
+        tone: 'default'
+      });
+      if (goLogin) {
+        window.location.href = 'login.html?next=index.html&reason=cart';
+      }
+    } else if (result.reason === 'customer_only') {
+      UI.showToast('Akun Admin tidak dapat berbelanja. Masuk sebagai Customer untuk menambah ke keranjang.', {
+        actionLabel: 'Panel Admin',
+        actionHref: 'admin.html'
       });
     } else if (result.reason === 'already_in_cart') {
       UI.showToast('Judul ini sudah berada di keranjang Anda.', {
@@ -556,6 +615,52 @@
         actionHref: 'koleksi.html'
       });
     }
+  };
+
+  const handleBuyNow = async (bookId) => {
+    const book = Store.getBookById(bookId);
+    if (!book) return;
+
+    if (!Auth.isLoggedIn()) {
+      const goLogin = await UI.confirmDialog({
+        title: 'Masuk untuk melakukan Checkout',
+        message: `Silakan masuk atau daftar akun Customer terlebih dahulu untuk langsung membeli "${book.title}".`,
+        confirmLabel: 'Masuk / Daftar',
+        cancelLabel: 'Nanti Saja',
+        tone: 'default'
+      });
+      if (goLogin) {
+        window.location.href = 'login.html?next=checkout.html';
+      }
+      return;
+    }
+
+    if (!Auth.isCustomer()) {
+      UI.showToast('Akun Admin tidak dapat melakukan Checkout. Masuk sebagai Customer untuk berbelanja.', {
+        actionLabel: 'Panel Admin',
+        actionHref: 'admin.html'
+      });
+      return;
+    }
+
+    if (Store.isOwned(bookId)) {
+      window.location.href = `koleksi.html?baca=${encodeURIComponent(bookId)}`;
+      return;
+    }
+
+    if (!Store.isInCart(bookId)) {
+      Store.addToCart(bookId);
+    }
+
+    await UI.runLoadingFlow({
+      badge: 'Menuju Pembayaran',
+      title: 'Menyiapkan Checkout...',
+      desc: `Mengarahkan Anda ke halaman pembayaran untuk "${book.title}".`,
+      durationMs: 520,
+      keepOpenOnSuccess: true
+    });
+
+    window.location.href = 'checkout.html';
   };
 
   const handleCopyPromo = async () => {
@@ -638,6 +743,13 @@
       if (detailTrigger) {
         const bookId = detailTrigger.getAttribute('data-open-detail');
         openBookModal(bookId, 'detail');
+        return;
+      }
+
+      const buyNowBtn = event.target.closest('[data-buy-now]');
+      if (buyNowBtn) {
+        const bookId = buyNowBtn.getAttribute('data-buy-now');
+        handleBuyNow(bookId);
         return;
       }
 

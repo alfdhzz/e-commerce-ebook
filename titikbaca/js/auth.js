@@ -221,10 +221,13 @@
       const params = new URLSearchParams(window.location.search);
       const status = params.get('status');
       const next = params.get('next');
+      const reason = params.get('reason');
       if (status === 'keluar') {
         showNotice('Anda telah keluar dari sesi akun.');
+      } else if (reason === 'cart') {
+        showNotice('Masuk atau daftar sebagai Customer untuk menambahkan e-book ke keranjang belanja.');
       } else if (next === 'checkout.html') {
-        showNotice('Masuk sebagai Customer untuk melanjutkan pembayaran & membuka unduhan PDF.');
+        showNotice('Masuk sebagai Customer untuk mengakses keranjang, membayar, & membuka unduhan PDF.');
       } else if (next === 'koleksi.html') {
         showNotice('Masuk sebagai Customer untuk membuka Pustaka Saya dan mengunduh e-book PDF.');
       } else if (next === 'admin.html') {
