@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keranjang &amp; Checkout — TitikBaca</title>
+  <meta name="description" content="Tinjau keranjang belanja e-book Anda, terapkan kode promo, dan selesaikan simulasi pembayaran instan di TitikBaca.">
+  <link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            periwinkle: '#9FA5D5',
+            peach: '#FED7B8',
+            canvas: '#FAFAFA',
+            ink: '#111827',
+            muted: '#4B5563',
+            line: '#E5E7EB'
+          },
+          fontFamily: {
+            serif: ['Newsreader', 'Georgia', 'serif'],
+            sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <link rel="stylesheet" href="css/custom.css">
+</head>
+<body class="bg-[#FAFAFA] text-[#111827] font-sans antialiased">
+
+  <!-- Navigasi Global (Sticky Navbar) -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-[#E5E7EB]">
+    <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-4">
+      <a href="index.html" class="inline-flex items-center gap-2 sm:gap-2.5 group focus:outline-none shrink-0">
+        <img
+          src="assets/logo-mark.svg"
+          alt="Logo TitikBaca"
+          width="36"
+          height="36"
+          class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl shrink-0 transition-transform duration-200 group-hover:scale-[1.03]"
+        >
+        <span class="font-editorial text-xl sm:text-2xl font-bold tracking-tight text-[#111827] leading-none">
+          TitikBaca<span class="inline-block w-1.5 h-1.5 rounded-full bg-[#9FA5D5] ml-0.5 align-baseline"></span>
+        </span>
+      </a>
+
+      <nav aria-label="Navigasi utama" class="flex items-center gap-1 sm:gap-2 shrink-0">
+        <a
+          href="index.html"
+          class="hidden sm:inline-flex px-3 py-2 rounded-lg text-sm font-medium text-[#4B5563] hover:text-[#111827] hover:bg-[#F3F4F6] whitespace-nowrap transition-colors"
+        >
+          Katalog
+        </a>
+
+        <a
+          href="koleksi.html"
+          class="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium text-[#4B5563] hover:text-[#111827] hover:bg-[#F3F4F6] whitespace-nowrap transition-colors"
+        >
+          <span>Pustaka<span class="hidden sm:inline"> Saya</span></span>
+          <span
+            data-library-badge
+            class="hidden items-center justify-center min-w-[18px] sm:min-w-[20px] h-[18px] sm:h-5 px-1 sm:px-1.5 rounded-full text-[10px] sm:text-[11px] font-bold bg-[#EEF0FA] text-[#111827] border border-[#9FA5D5]/60"
+          >0</span>
+        </a>
+
+        <a
+          href="checkout.html"
+          aria-current="page"
+          aria-label="Keranjang Belanja"
+          class="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-[#111827] text-white ring-2 ring-[#9FA5D5]/60 whitespace-nowrap transition-colors"
+        >
+          <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+          </svg>
+          <span class="hidden md:inline">Keranjang</span>
+          <span
+            data-cart-badge
+            class="hidden items-center justify-center min-w-[18px] sm:min-w-[20px] h-[18px] sm:h-5 px-1 sm:px-1.5 rounded-full text-[10px] sm:text-[11px] font-bold bg-[#FED7B8] text-[#111827]"
+          >0</span>
+        </a>
+
+        <div data-auth-slot class="inline-flex items-center"></div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+    <!-- Breadcrumb & Header Halaman -->
+    <div class="mb-8">
+      <a href="index.html" class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#4B5563] hover:text-[#111827] transition-colors mb-3">
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <span>Kembali ke Katalog</span>
+      </a>
+      <h1 class="font-editorial text-3xl sm:text-4xl font-semibold text-[#111827] tracking-tight">
+        Keranjang &amp; Checkout
+      </h1>
+      <p class="text-sm sm:text-base text-[#4B5563] mt-1">
+        Produk digital otomatis dibatasi 1 unit per judul dan langsung masuk ke Pustaka Saya setelah pembayaran.
+      </p>
+    </div>
+
+    <!-- Empty State Keranjang Kosong -->
+    <section id="checkout-empty" class="hidden bg-white border border-[#E5E7EB] rounded-2xl p-10 sm:p-14 text-center max-w-xl mx-auto my-8">
+      <div class="w-14 h-14 rounded-2xl bg-signature-soft border border-[#E5E7EB] flex items-center justify-center mx-auto mb-5 text-[#111827]">
+        <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+        </svg>
+      </div>
+      <h2 class="font-editorial text-2xl font-semibold text-[#111827] mb-2">
+        Keranjang belanja Anda masih kosong
+      </h2>
+      <p class="text-sm text-[#4B5563] leading-relaxed mb-6">
+        Jelajahi katalog kurasi TitikBaca, baca cuplikan Bab 1 gratis, lalu tambahkan judul pilihan ke keranjang Anda.
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <a
+          href="index.html"
+          class="inline-flex items-center justify-center px-6 py-3 rounded-xl text-sm font-semibold bg-[#111827] text-white hover:bg-[#1F2937] transition-colors"
+        >
+          Jelajahi Katalog
+        </a>
+        <a
+          href="koleksi.html"
+          class="inline-flex items-center justify-center px-5 py-3 rounded-xl text-sm font-semibold bg-white text-[#111827] border border-[#E5E7EB] hover:bg-gray-50 transition-colors"
+        >
+          Lihat Pustaka Saya
+        </a>
+      </div>
+    </section>
+
+    <!-- Konten Utama Checkout (2 Kolom) -->
+    <div id="checkout-content" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- Kolom Kiri: Daftar Item & Kode Promo -->
+      <div class="lg:col-span-7 space-y-6">
+        <!-- Daftar Item -->
+        <section aria-labelledby="cart-heading">
+          <div class="flex items-center justify-between mb-3.5">
+            <h2 id="cart-heading" class="text-sm font-semibold uppercase tracking-wider text-[#4B5563]">
+              Daftar E-Book Dipilih
+            </h2>
+            <span id="cart-items-count" class="text-xs font-semibold text-[#111827] bg-white border border-[#E5E7EB] px-2.5 py-1 rounded-full">
+              0 judul dipilih
+            </span>
+          </div>
+
+          <div id="cart-items-list" class="space-y-3.5">
+            <!-- Diisi oleh checkout.js -->
+          </div>
+        </section>
+
+        <!-- Kartu Kode Promo -->
+        <section class="bg-white border border-[#E5E7EB] rounded-2xl p-5 sm:p-6">
+          <h2 class="text-base font-bold text-[#111827] mb-1">Kode Promo</h2>
+          <p class="text-xs sm:text-sm text-[#4B5563] mb-4">
+            Masukkan kode diskon untuk mendapatkan potongan langsung pada total transaksi.
+          </p>
+
+          <form id="promo-form" class="flex flex-col sm:flex-row gap-2.5">
+            <input
+              type="text"
+              id="promo-input"
+              placeholder="Contoh: DEMOKAMPUS"
+              autocomplete="off"
+              class="flex-1 px-4 py-2.5 rounded-xl bg-[#FAFAFA] border border-[#E5E7EB] text-sm font-medium uppercase tracking-wide text-[#111827] placeholder:normal-case placeholder:tracking-normal placeholder:text-[#4B5563]/70 focus:bg-white focus:border-[#9FA5D5] transition-colors"
+            >
+            <button
+              type="submit"
+              id="promo-submit-btn"
+              class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-[#111827] text-white hover:bg-[#1F2937] transition-colors shrink-0"
+            >
+              Terapkan
+            </button>
+          </form>
+
+          <!-- Petunjuk Kode Promo -->
+          <div class="mt-3 flex flex-wrap items-center gap-2 text-xs text-[#4B5563]">
+            <span>Petunjuk demo: gunakan kode</span>
+            <button
+              type="button"
+              id="quick-promo-btn"
+              class="bg-signature-soft px-2.5 py-0.5 rounded-md font-bold text-[#111827] border border-[#9FA5D5]/50 hover:brightness-95 transition"
+              title="Klik untuk langsung menerapkan DEMOKAMPUS"
+            >
+              DEMOKAMPUS
+            </button>
+            <span>untuk potongan 25%.</span>
+          </div>
+
+          <p id="promo-feedback" class="hidden"></p>
+
+          <!-- Pill Promo Aktif -->
+          <div
+            id="promo-active-pill"
+            class="hidden mt-4 items-center justify-between gap-3 bg-signature-soft border border-[#9FA5D5]/50 rounded-xl px-4 py-3"
+          >
+            <!-- Diisi oleh checkout.js -->
+          </div>
+        </section>
+
+        <!-- Seksi Rekomendasi Cross-Sell di Keranjang -->
+        <section id="cross-sell-section" class="hidden bg-white border border-[#E5E7EB] rounded-2xl p-5 sm:p-6">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+            <div>
+              <h2 class="font-editorial text-xl font-semibold text-[#111827]">
+                Lengkapi Bacaan Anda
+              </h2>
+              <p class="text-xs sm:text-sm text-[#4B5563] mt-0.5">
+                Rekomendasi e-book kurasi lain yang relevan dengan pilihan di keranjang Anda.
+              </p>
+            </div>
+            <span class="bg-signature-soft px-2.5 py-1 rounded-md text-[11px] font-semibold text-[#111827]">
+              Rekomendasi
+            </span>
+          </div>
+
+          <div id="cross-sell-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Diisi oleh checkout.js -->
+          </div>
+        </section>
+      </div>
+
+      <!-- Kolom Kanan: Ringkasan Harga & Panel Pembayaran Simulasi -->
+      <aside class="lg:col-span-5 space-y-6 lg:sticky lg:top-24">
+        <div class="bg-white border border-[#E5E7EB] rounded-2xl p-5 sm:p-6">
+          <h2 class="font-editorial text-xl font-semibold text-[#111827] mb-4 pb-3 border-b border-[#E5E7EB]">
+            Ringkasan Pembayaran
+          </h2>
+
+          <!-- Rincian Nominal -->
+          <div class="space-y-2.5 text-sm mb-5 pb-5 border-b border-[#E5E7EB]">
+            <div class="flex items-center justify-between text-[#4B5563]">
+              <span>Subtotal E-Book</span>
+              <span id="summary-subtotal" class="font-medium text-[#111827]">Rp 0</span>
+            </div>
+
+            <div id="summary-discount-row" class="hidden items-center justify-between text-emerald-700">
+              <span id="summary-discount-label">Diskon (DEMOKAMPUS 25%)</span>
+              <span id="summary-discount-value" class="font-semibold">-Rp 0</span>
+            </div>
+
+            <div class="flex items-center justify-between text-[#4B5563]">
+              <span>Biaya Layanan</span>
+              <span class="font-medium text-[#111827]">Gratis</span>
+            </div>
+
+            <div class="pt-3 mt-2 border-t border-dashed border-[#E5E7EB] flex items-baseline justify-between">
+              <span class="text-base font-bold text-[#111827]">Total Pembayaran</span>
+              <span id="summary-total" class="text-2xl font-bold text-[#111827] tracking-tight">Rp 0</span>
+            </div>
+          </div>
+
+          <!-- Pilihan Metode Pembayaran -->
+          <div class="mb-5">
+            <p class="text-xs font-semibold uppercase tracking-wider text-[#4B5563] mb-2.5">
+              Pilih Metode Pembayaran
+            </p>
+            <div class="grid grid-cols-2 gap-2.5">
+              <button
+                type="button"
+                id="method-qris-btn"
+                aria-pressed="true"
+                class="px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border-2 border-[#111827] bg-white text-left transition-colors"
+              >
+                <span class="block text-xs sm:text-sm font-bold text-[#111827]">QRIS Instan</span>
+                <span class="block text-[10px] sm:text-[11px] text-[#4B5563] mt-0.5 leading-snug">Scan e-wallet &amp; m-banking</span>
+              </button>
+
+              <button
+                type="button"
+                id="method-va-btn"
+                aria-pressed="false"
+                class="px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border border-[#E5E7EB] bg-[#FAFAFA] hover:bg-white text-left transition-colors"
+              >
+                <span class="block text-xs sm:text-sm font-bold text-[#111827]">Virtual Account</span>
+                <span class="block text-[10px] sm:text-[11px] text-[#4B5563] mt-0.5 leading-snug">Transfer bank otomatis</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Panel QRIS Instan (Bingkai Gradient #9FA5D5 -> #FED7B8) -->
+          <div id="payment-panel-qris" class="mb-5">
+            <div class="qris-gradient-frame">
+              <div class="bg-white rounded-[0.85rem] p-4 sm:p-5 text-center">
+                <div class="flex items-center justify-between gap-2 text-[11px] sm:text-xs pb-3 mb-4 border-b border-[#E5E7EB]">
+                  <span class="font-bold tracking-wider text-[#111827] truncate">QRIS · TITIKBACA DIGITAL</span>
+                  <span class="px-2 py-0.5 rounded bg-signature-soft font-semibold text-[#111827] shrink-0">Instan</span>
+                </div>
+
+                <!-- Ilustrasi Kode QR SVG Tajam & Rapi -->
+                <div class="w-44 h-44 mx-auto p-3 rounded-xl bg-[#FAFAFA] border border-[#E5E7EB] flex items-center justify-center mb-3.5">
+                  <svg class="w-full h-full" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kode QRIS Simulasi TitikBaca">
+                    <!-- Finder Pattern Kiri Atas -->
+                    <rect x="6" y="6" width="30" height="30" rx="3" stroke="#111827" stroke-width="5"/>
+                    <rect x="14" y="14" width="14" height="14" rx="1.5" fill="#111827"/>
+                    <!-- Finder Pattern Kanan Atas -->
+                    <rect x="84" y="6" width="30" height="30" rx="3" stroke="#111827" stroke-width="5"/>
+                    <rect x="92" y="14" width="14" height="14" rx="1.5" fill="#111827"/>
+                    <!-- Finder Pattern Kiri Bawah -->
+                    <rect x="6" y="84" width="30" height="30" rx="3" stroke="#111827" stroke-width="5"/>
+                    <rect x="14" y="92" width="14" height="14" rx="1.5" fill="#111827"/>
+                    <!-- Modul Data QR -->
+                    <rect x="44" y="8" width="6" height="6" fill="#111827"/>
+                    <rect x="56" y="8" width="6" height="12" fill="#111827"/>
+                    <rect x="68" y="8" width="8" height="6" fill="#111827"/>
+                    <rect x="44" y="20" width="8" height="8" fill="#111827"/>
+                    <rect x="64" y="20" width="12" height="6" fill="#111827"/>
+                    <rect x="44" y="34" width="6" height="10" fill="#111827"/>
+                    <rect x="56" y="32" width="12" height="6" fill="#111827"/>
+                    <rect x="8" y="44" width="12" height="6" fill="#111827"/>
+                    <rect x="26" y="44" width="10" height="8" fill="#111827"/>
+                    <rect x="8" y="58" width="8" height="14" fill="#111827"/>
+                    <rect x="22" y="60" width="14" height="6" fill="#111827"/>
+                    <rect x="22" y="72" width="8" height="6" fill="#111827"/>
+                    <!-- Aksen Tengah TitikBaca -->
+                    <rect x="48" y="48" width="24" height="24" rx="5" fill="#111827"/>
+                    <circle cx="60" cy="60" r="6" fill="#FED7B8"/>
+                    <circle cx="60" cy="60" r="2.5" fill="#9FA5D5"/>
+                    <!-- Modul Data Kanan & Bawah -->
+                    <rect x="80" y="44" width="10" height="6" fill="#111827"/>
+                    <rect x="96" y="44" width="16" height="6" fill="#111827"/>
+                    <rect x="80" y="56" width="6" height="14" fill="#111827"/>
+                    <rect x="92" y="56" width="12" height="8" fill="#111827"/>
+                    <rect x="108" y="56" width="6" height="18" fill="#111827"/>
+                    <rect x="80" y="76" width="16" height="6" fill="#111827"/>
+                    <rect x="44" y="80" width="8" height="12" fill="#111827"/>
+                    <rect x="58" y="80" width="14" height="6" fill="#111827"/>
+                    <rect x="58" y="92" width="8" height="20" fill="#111827"/>
+                    <rect x="44" y="100" width="8" height="12" fill="#111827"/>
+                    <rect x="72" y="90" width="12" height="8" fill="#111827"/>
+                    <rect x="90" y="88" width="12" height="12" fill="#111827"/>
+                    <rect x="72" y="104" width="18" height="8" fill="#111827"/>
+                    <rect x="98" y="104" width="14" height="8" fill="#111827"/>
+                  </svg>
+                </div>
+
+                <p class="text-xs text-[#4B5563]">Nominal yang dibayarkan</p>
+                <p id="qris-amount" class="text-lg font-bold text-[#111827] mt-0.5">Rp 0</p>
+                <p class="text-[11px] text-[#4B5563] mt-1.5">NMID: ID1026008941201 · Verifikasi otomatis</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel Transfer Virtual Account -->
+          <div id="payment-panel-va" class="hidden mb-5 bg-[#FAFAFA] border border-[#E5E7EB] rounded-2xl p-5 space-y-4">
+            <div>
+              <label for="va-bank-select" class="block text-xs font-semibold text-[#4B5563] mb-1.5">
+                Pilih Bank Tujuan
+              </label>
+              <select
+                id="va-bank-select"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#E5E7EB] text-sm font-semibold text-[#111827]"
+              >
+                <option value="BCA">Bank BCA</option>
+                <option value="Mandiri">Bank Mandiri</option>
+                <option value="BNI">Bank BNI</option>
+                <option value="BRI">Bank BRI</option>
+              </select>
+            </div>
+
+            <div class="bg-white border border-[#E5E7EB] rounded-xl p-3.5 sm:p-4">
+              <p id="va-bank-name" class="text-xs font-semibold text-[#4B5563]">BCA Virtual Account</p>
+              <div class="mt-1.5 flex flex-wrap items-center justify-between gap-2">
+                <p id="va-number" class="font-mono text-sm sm:text-lg font-bold text-[#111827] tracking-wide sm:tracking-wider">
+                  8801 0812 9402 3318
+                </p>
+                <button
+                  type="button"
+                  id="copy-va-btn"
+                  class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#FAFAFA] hover:bg-gray-100 border border-[#E5E7EB] text-[#111827] transition-colors shrink-0"
+                >
+                  Salin
+                </button>
+              </div>
+              <div class="mt-3 pt-3 border-t border-[#E5E7EB] flex items-center justify-between text-xs">
+                <span class="text-[#4B5563]">Total Transfer</span>
+                <span id="va-amount" class="font-bold text-[#111827]">Rp 0</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Info Akun Pembeli / Gate Login -->
+          <div id="checkout-auth-banner" class="mb-4"></div>
+
+          <!-- Tombol Utama Simulasi Pembayaran Berhasil -->
+          <button
+            type="button"
+            id="pay-simulate-btn"
+            class="w-full inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl text-sm sm:text-base font-semibold bg-[#111827] text-white hover:bg-[#1F2937] transition-colors"
+          >
+            <span>Simulasi Pembayaran Berhasil</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+            </svg>
+          </button>
+
+          <p class="text-[11px] text-[#4B5563] text-center mt-3 leading-relaxed">
+            Akses <strong>Unduh E-Book (.pdf)</strong> dan Web Reader akan otomatis terbuka di halaman Pustaka Saya segera setelah pembayaran terverifikasi.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-[#E5E7EB] bg-white mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm text-[#4B5563]">
+      <div>
+        <div class="inline-flex items-center gap-2">
+          <img src="assets/logo-mark.svg" alt="" width="24" height="24" class="w-6 h-6 rounded-md shrink-0">
+          <span class="font-editorial text-lg font-bold text-[#111827]">
+            TitikBaca<span class="inline-block w-1.5 h-1.5 rounded-full bg-[#9FA5D5] ml-0.5"></span>
+          </span>
+        </div>
+        <p class="text-xs text-[#4B5563] mt-1.5">
+          Checkout simulasi client-side · Data transaksi tersimpan lokal di browser Anda.
+        </p>
+      </div>
+      <div class="flex flex-wrap items-center gap-5 text-xs font-medium">
+        <a href="index.html" class="hover:text-[#111827] transition-colors">Katalog</a>
+        <a href="checkout.html" class="hover:text-[#111827] transition-colors">Keranjang &amp; Checkout</a>
+        <a href="koleksi.html" class="hover:text-[#111827] transition-colors">Pustaka Saya</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Overlay Loading Proses & Konfirmasi Pembayaran Berhasil -->
+  <div
+    id="payment-processing-overlay"
+    class="modal-backdrop fixed inset-0 z-50 bg-[#FAFAFA]/95 backdrop-blur-sm flex items-center justify-center p-4"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+    aria-labelledby="payment-overlay-title"
+  >
+    <div class="modal-panel w-full max-w-md bg-white border border-[#E5E7EB] rounded-2xl p-8 sm:p-9 shadow-xl text-center">
+      <!-- State 1: Spinner + Logo TitikBaca -->
+      <div id="payment-stage-loading" class="relative w-[76px] h-[76px] mx-auto mb-6 flex items-center justify-center">
+        <div class="tb-pay-ring absolute inset-0" aria-hidden="true"></div>
+        <img
+          src="assets/logo-mark.svg"
+          alt="Logo TitikBaca"
+          width="46"
+          height="46"
+          class="w-[46px] h-[46px] rounded-xl relative z-10"
+        >
+      </div>
+
+      <!-- State 2: Checkmark Berhasil -->
+      <div id="payment-stage-success" class="hidden w-[76px] h-[76px] mx-auto mb-6 items-center justify-center">
+        <div class="tb-pay-success-badge w-[72px] h-[72px] rounded-full bg-signature-gradient p-[3px] flex items-center justify-center">
+          <div class="w-full h-full rounded-full bg-[#111827] flex items-center justify-center">
+            <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.6" aria-hidden="true">
+              <path class="tb-pay-check-path" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <p id="payment-overlay-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-[0.14em] bg-[#FAFAFA] border border-[#E5E7EB] text-[#4B5563] mb-3">
+        Memproses Transaksi
+      </p>
+
+      <h2 id="payment-overlay-title" class="font-editorial text-2xl sm:text-[1.7rem] font-semibold text-[#111827] leading-tight">
+        Memverifikasi Pembayaran...
+      </h2>
+
+      <p id="payment-overlay-desc" class="text-sm text-[#4B5563] mt-2 leading-relaxed">
+        Mohon tunggu sebentar, sistem sedang memeriksa transaksi Anda.
+      </p>
+
+      <!-- Progress Bar Editorial -->
+      <div class="mt-6 w-full h-1.5 rounded-full bg-[#E5E7EB] overflow-hidden">
+        <div id="payment-overlay-progress" class="tb-pay-progress-fill h-full rounded-full" style="width: 12%;"></div>
+      </div>
+
+      <div class="mt-4 flex items-center justify-between text-[11px] font-medium text-[#4B5563]">
+        <span id="payment-step-1" class="text-[#111827] font-semibold">1. Verifikasi Pembayaran</span>
+        <span id="payment-step-2">2. Buka Akses PDF</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts Modular ES6+ -->
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/checkout.js"></script>
+</body>
+</html>

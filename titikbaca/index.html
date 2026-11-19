@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TitikBaca — Platform E-Commerce E-Book Kurasi</title>
+  <meta name="description" content="Katalog e-book kurasi berbahasa Indonesia untuk rekayasa perangkat lunak, desain produk, bisnis, dan analitik data.">
+  <link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg">
+
+  <!-- Google Fonts: Newsreader (Serif Editorial) & Plus Jakarta Sans (UI & Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN dengan Konfigurasi Warna & Font Kustom -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            periwinkle: '#9FA5D5',
+            peach: '#FED7B8',
+            canvas: '#FAFAFA',
+            ink: '#111827',
+            muted: '#4B5563',
+            line: '#E5E7EB'
+          },
+          fontFamily: {
+            serif: ['Newsreader', 'Georgia', 'serif'],
+            sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <link rel="stylesheet" href="css/custom.css">
+  <script>
+    (function () {
+      try {
+        var navEntries = window.performance && performance.getEntriesByType ? performance.getEntriesByType('navigation') : [];
+        var isReload = navEntries.length > 0 && navEntries[0].type === 'reload';
+        if (window.sessionStorage.getItem('titikbaca_intro_seen') === '1' && !isReload) {
+          document.documentElement.classList.add('tb-skip-splash');
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body class="bg-[#FAFAFA] text-[#111827] font-sans antialiased">
+
+  <!-- Opening Preloader (Logo & Nama Website TitikBaca) -->
+  <div id="tb-preloader" role="status" aria-live="polite" aria-label="Memuat TitikBaca">
+    <div class="flex flex-col items-center text-center px-6">
+      <img
+        src="assets/logo-mark.svg"
+        alt="Logo TitikBaca"
+        width="68"
+        height="68"
+        class="tb-loader-logo w-[68px] h-[68px] rounded-2xl shadow-md mb-5"
+      >
+      <div class="tb-loader-wordmark font-editorial text-4xl sm:text-[2.6rem] font-bold tracking-tight text-[#111827] leading-none">
+        TitikBaca<span class="inline-block w-2 h-2 rounded-full bg-[#9FA5D5] ml-1 align-baseline"></span>
+      </div>
+      <p class="tb-loader-sub text-[11px] font-semibold uppercase tracking-[0.22em] text-[#4B5563] mt-3">
+        Pustaka Digital Kurasi
+      </p>
+      <div class="mt-6 w-44 h-[3px] rounded-full bg-[#E5E7EB] overflow-hidden">
+        <div class="tb-loader-bar-fill w-full h-full rounded-full"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigasi Global (Sticky Navbar) -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-[#E5E7EB]">
+    <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-4">
+      <!-- Brand Logo TitikBaca -->
+      <a href="index.html" class="inline-flex items-center gap-2 sm:gap-2.5 group focus:outline-none shrink-0">
+        <img
+          src="assets/logo-mark.svg"
+          alt="Logo TitikBaca"
+          width="36"
+          height="36"
+          class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl shrink-0 transition-transform duration-200 group-hover:scale-[1.03]"
+        >
+        <span class="font-editorial text-xl sm:text-2xl font-bold tracking-tight text-[#111827] leading-none">
+          TitikBaca<span class="inline-block w-1.5 h-1.5 rounded-full bg-[#9FA5D5] ml-0.5 align-baseline"></span>
+        </span>
+      </a>
+
+      <!-- Menu Navigasi Kanan -->
+      <nav aria-label="Navigasi utama" class="flex items-center gap-1 sm:gap-2 shrink-0">
+        <a
+          href="index.html"
+          aria-current="page"
+          class="hidden sm:inline-flex px-3 py-2 rounded-lg text-sm font-semibold text-[#111827] bg-[#F3F4F6] whitespace-nowrap transition-colors"
+        >
+          Katalog
+        </a>
+
+        <a
+          href="koleksi.html"
+          class="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium text-[#4B5563] hover:text-[#111827] hover:bg-[#F3F4F6] whitespace-nowrap transition-colors"
+        >
+          <span>Pustaka<span class="hidden sm:inline"> Saya</span></span>
+          <span
+            data-library-badge
+            class="hidden items-center justify-center min-w-[18px] sm:min-w-[20px] h-[18px] sm:h-5 px-1 sm:px-1.5 rounded-full text-[10px] sm:text-[11px] font-bold bg-[#EEF0FA] text-[#111827] border border-[#9FA5D5]/60"
+          >0</span>
+        </a>
+
+        <a
+          href="checkout.html"
+          class="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-[#111827] text-white hover:bg-[#1F2937] whitespace-nowrap transition-colors"
+          aria-label="Keranjang Belanja"
+        >
+          <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+          </svg>
+          <span class="hidden md:inline">Keranjang</span>
+          <span
+            data-cart-badge
+            class="hidden items-center justify-center min-w-[18px] sm:min-w-[20px] h-[18px] sm:h-5 px-1 sm:px-1.5 rounded-full text-[10px] sm:text-[11px] font-bold bg-[#FED7B8] text-[#111827]"
+          >0</span>
+        </a>
+
+        <div data-auth-slot class="inline-flex items-center"></div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-1">
+    <!-- Hero Section Editorial -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 sm:pt-8 pb-6">
+      <div class="bg-signature-soft border border-[#E5E7EB] rounded-2xl px-5 py-7 sm:px-10 sm:py-12 lg:px-12 lg:py-14">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          <!-- Kolom Teks Editorial -->
+          <div class="lg:col-span-7">
+            <p class="inline-flex items-center gap-2 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[#111827] mb-3.5 sm:mb-4">
+              <span class="w-2 h-2 rounded-full bg-[#111827] shrink-0"></span>
+              <span>Penerbitan Digital Kurasi · Edisi 2025–2026</span>
+            </p>
+
+            <h1 class="font-editorial text-[1.75rem] sm:text-4xl lg:text-[2.85rem] font-semibold text-[#111827] leading-[1.15] tracking-tight mb-4">
+              Buku digital pilihan untuk praktisi teknologi, desain, dan bisnis.
+            </h1>
+
+            <p class="text-sm sm:text-lg text-[#4B5563] leading-relaxed max-w-2xl mb-6 sm:mb-7">
+              Setiap judul di TitikBaca disunting ringkas, tersedia dalam format PDF &amp; EPUB tanpa DRM, dan dapat dibaca cuplikan Bab 1 sebelum Anda memutuskan membeli.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-2.5 sm:gap-3">
+              <a
+                href="#katalog"
+                class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 rounded-xl text-sm font-semibold bg-[#111827] text-white hover:bg-[#1F2937] whitespace-nowrap transition-colors"
+              >
+                <span>Jelajahi Katalog</span>
+                <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </a>
+
+              <a
+                href="koleksi.html"
+                class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 rounded-xl text-sm font-semibold bg-white/85 hover:bg-white text-[#111827] border border-[#E5E7EB] whitespace-nowrap transition-colors"
+              >
+                <span>Buka Pustaka Saya</span>
+              </a>
+            </div>
+
+            <!-- Bar Fakta Ringkas -->
+            <div class="mt-7 sm:mt-8 pt-5 sm:pt-6 border-t border-[#111827]/10 grid grid-cols-3 gap-2.5 sm:gap-4 max-w-lg text-[11px] sm:text-sm">
+              <div>
+                <p class="font-bold text-[#111827]">8 Judul Kurasi</p>
+                <p class="text-[#4B5563] mt-0.5">4 disiplin ilmu</p>
+              </div>
+              <div>
+                <p class="font-bold text-[#111827]">Cuplikan Bab 1</p>
+                <p class="text-[#4B5563] mt-0.5">Gratis di tiap buku</p>
+              </div>
+              <div>
+                <p class="font-bold text-[#111827]">Akses Instan</p>
+                <p class="text-[#4B5563] mt-0.5">Baca &amp; unduh PDF</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kolom Visual 3 Sampul Pilihan (CSS/SVG Tanpa Gambar Eksternal) -->
+          <div class="lg:col-span-5">
+            <div id="hero-featured-covers" class="grid grid-cols-3 gap-2.5 sm:gap-4 items-end pt-1 sm:pt-2 max-w-md mx-auto lg:max-w-none">
+              <!-- Diisi oleh app.js -->
+            </div>
+            <p class="text-xs text-[#4B5563] text-center lg:text-right mt-3">
+              Klik sampul untuk membaca sinopsis dan pratinjau Bab 1.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Banner Promo Terukur (Signature Gradient) -->
+      <div class="mt-4 bg-signature-gradient rounded-xl px-5 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border border-[#9FA5D5]/40">
+        <div class="flex items-center gap-3 text-sm text-[#111827]">
+          <span class="px-2 py-0.5 rounded bg-[#111827] text-white text-[11px] font-bold tracking-wide uppercase shrink-0">
+            Promo
+          </span>
+          <p class="font-medium">
+            Gunakan kode <strong class="font-bold tracking-wide">DEMOKAMPUS</strong> saat checkout untuk potongan harga <strong>25%</strong> seluruh judul.
+          </p>
+        </div>
+        <button
+          type="button"
+          id="copy-promo-btn"
+          class="self-start sm:self-center inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white/90 hover:bg-white text-[#111827] border border-[#111827]/15 transition-colors shrink-0"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+          </svg>
+          <span>Salin Kode</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Seksi Katalog E-Book -->
+    <section id="katalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-16 scroll-mt-20">
+      <!-- Header Katalog & Kontrol Pencarian / Urutan -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+        <div>
+          <h2 class="font-editorial text-2xl sm:text-3xl font-semibold text-[#111827] tracking-tight">
+            Katalog E-Book
+          </h2>
+          <p id="catalog-result-count" class="text-sm text-[#4B5563] mt-1">
+            Menampilkan 8 dari 8 judul
+          </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+          <!-- Input Pencarian Real-Time -->
+          <div class="relative flex-1 sm:w-72">
+            <svg
+              class="w-4 h-4 text-[#4B5563] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <input
+              type="text"
+              id="catalog-search"
+              placeholder="Cari judul atau penulis..."
+              autocomplete="off"
+              class="w-full pl-10 pr-9 py-2.5 rounded-xl bg-white border border-[#E5E7EB] text-sm text-[#111827] placeholder:text-[#4B5563]/70 focus:border-[#9FA5D5] transition-colors"
+            >
+            <button
+              type="button"
+              id="search-clear-btn"
+              aria-label="Hapus pencarian"
+              class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 p-1 rounded-md text-[#4B5563] hover:text-[#111827] hover:bg-gray-100"
+            >
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Dropdown Urutkan -->
+          <div class="flex items-center gap-2 shrink-0">
+            <label for="catalog-sort" class="text-xs font-medium text-[#4B5563] whitespace-nowrap">Urutkan:</label>
+            <select
+              id="catalog-sort"
+              class="flex-1 sm:flex-none px-3.5 py-2.5 rounded-xl bg-white border border-[#E5E7EB] text-sm font-medium text-[#111827] focus:border-[#9FA5D5] cursor-pointer"
+            >
+              <option value="recommended">Rekomendasi</option>
+              <option value="price-asc">Harga Terendah</option>
+              <option value="price-desc">Harga Tertinggi</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Filter Kategori -->
+      <div
+        id="category-tabs"
+        role="tablist"
+        aria-label="Filter kategori e-book"
+        class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-6"
+      >
+        <!-- Diisi oleh app.js -->
+      </div>
+
+      <!-- Grid Kartu E-Book -->
+      <div
+        id="catalog-grid"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+      >
+        <!-- Diisi oleh app.js -->
+      </div>
+
+      <!-- Empty State Pencarian -->
+      <div
+        id="catalog-empty"
+        class="hidden bg-white border border-[#E5E7EB] rounded-2xl p-10 sm:p-12 text-center max-w-lg mx-auto my-8"
+      >
+        <div class="w-12 h-12 rounded-xl bg-[#FAFAFA] border border-[#E5E7EB] flex items-center justify-center mx-auto mb-4 text-[#4B5563]">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </div>
+        <h3 class="font-editorial text-xl font-semibold text-[#111827] mb-1.5">
+          Tidak ada e-book yang cocok
+        </h3>
+        <p class="text-sm text-[#4B5563] mb-5">
+          Coba gunakan kata kunci judul atau nama penulis lain, atau tampilkan seluruh kategori.
+        </p>
+        <button
+          type="button"
+          id="reset-filters-btn"
+          class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-[#111827] text-white hover:bg-[#1F2937] transition-colors"
+        >
+          Tampilkan Semua Judul
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-[#E5E7EB] bg-white mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm text-[#4B5563]">
+      <div>
+        <div class="inline-flex items-center gap-2">
+          <img src="assets/logo-mark.svg" alt="" width="24" height="24" class="w-6 h-6 rounded-md shrink-0">
+          <span class="font-editorial text-lg font-bold text-[#111827]">
+            TitikBaca<span class="inline-block w-1.5 h-1.5 rounded-full bg-[#9FA5D5] ml-0.5"></span>
+          </span>
+        </div>
+        <p class="text-xs text-[#4B5563] mt-1.5">
+          Platform E-Commerce E-Book Kurasi · Penyimpanan lokal aktif di peramban Anda.
+        </p>
+      </div>
+      <div class="flex flex-wrap items-center gap-5 text-xs font-medium">
+        <a href="index.html" class="hover:text-[#111827] transition-colors">Katalog</a>
+        <a href="checkout.html" class="hover:text-[#111827] transition-colors">Keranjang &amp; Checkout</a>
+        <a href="koleksi.html" class="hover:text-[#111827] transition-colors">Pustaka Saya</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal Detail Buku & Pratinjau Bab 1 -->
+  <div
+    id="book-modal"
+    class="modal-backdrop fixed inset-0 z-50 bg-[#111827]/50 backdrop-blur-[2px] flex items-center justify-center p-4"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+    aria-label="Detail E-Book"
+  >
+    <div class="modal-panel relative w-full max-w-4xl bg-white border border-[#E5E7EB] rounded-2xl shadow-2xl overflow-hidden">
+      <button
+        type="button"
+        id="book-modal-close"
+        aria-label="Tutup jendela detail"
+        class="absolute top-3.5 right-3.5 z-30 w-9 h-9 rounded-lg bg-white/95 border border-[#E5E7EB] text-[#4B5563] hover:text-[#111827] hover:bg-gray-100 flex items-center justify-center transition-colors"
+      >
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <div id="book-modal-content">
+        <!-- Diisi oleh app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts Modular ES6+ -->
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

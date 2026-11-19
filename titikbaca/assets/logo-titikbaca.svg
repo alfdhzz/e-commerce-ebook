@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 64" width="256" height="64" fill="none" role="img" aria-label="TitikBaca — Platform E-Book Kurasi">
+  <defs>
+    <linearGradient id="tb-full-dot" x1="27" y1="13.5" x2="37" y2="23.5" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#9FA5D5"/>
+      <stop offset="100%" stop-color="#FED7B8"/>
+    </linearGradient>
+    <linearGradient id="tb-full-border" x1="4" y1="4" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#9FA5D5" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#FED7B8" stop-opacity="0.35"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Logomark (64x64) -->
+  <g transform="translate(0, 4) scale(0.875)">
+    <rect x="2" y="2" width="60" height="60" rx="16" fill="#111827"/>
+    <rect x="2.75" y="2.75" width="58.5" height="58.5" rx="15.25" stroke="url(#tb-full-border)" stroke-width="1.5"/>
+    <circle cx="32" cy="18.5" r="5" fill="url(#tb-full-dot)"/>
+    <path
+      d="M30.2 28.8C25.6 25.6 20.4 24.8 15.8 25.55C14.8 25.7 14 26.55 14 27.6V44.8C14 45.85 14.95 46.65 16 46.5C20.5 45.85 25.4 46.65 29.9 49.25C30.45 49.55 31 49.15 31 48.5V30.1C31 29.55 30.7 29.1 30.2 28.8Z"
+      fill="#FAFAFA"
+    />
+    <path
+      d="M33.8 28.8C38.4 25.6 43.6 24.8 48.2 25.55C49.2 25.7 50 26.55 50 27.6V44.8C50 45.85 49.05 46.65 48 46.5C43.5 45.85 38.6 46.65 34.1 49.25C33.55 49.55 33 49.15 33 48.5V30.1C33 29.55 33.3 29.1 33.8 28.8Z"
+      fill="#FAFAFA"
+      fill-opacity="0.82"
+    />
+  </g>
+
+  <!-- Wordmark Editorial -->
+  <text
+    x="70"
+    y="37"
+    fill="#111827"
+    font-family="Newsreader, Georgia, 'Times New Roman', serif"
+    font-size="31"
+    font-weight="700"
+    letter-spacing="-0.6"
+  >TitikBaca</text>
+
+  <!-- Aksen Titik Periwinkle -->
+  <circle cx="215" cy="34" r="3.4" fill="#9FA5D5"/>
+
+  <!-- Sub-label Tipis & Bersih -->
+  <text
+    x="71"
+    y="52"
+    fill="#4B5563"
+    font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif"
+    font-size="10.5"
+    font-weight="600"
+    letter-spacing="1.4"
+  >PUSTAKA DIGITAL KURASI</text>
+</svg>

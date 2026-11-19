@@ -1,0 +1,435 @@
+/* ==========================================================================
+   TitikBaca — Modern Editorial & Clean Digital Storefront Stylesheet
+   ========================================================================== */
+
+:root {
+  --tb-periwinkle: #9FA5D5;
+  --tb-peach: #FED7B8;
+  --tb-gradient-main: linear-gradient(135deg, #9FA5D5 0%, #FED7B8 100%);
+  --tb-gradient-soft: linear-gradient(135deg, rgba(159, 165, 213, 0.22) 0%, rgba(254, 215, 184, 0.28) 100%);
+  --tb-gradient-subtle: linear-gradient(135deg, rgba(159, 165, 213, 0.12) 0%, rgba(254, 215, 184, 0.16) 100%);
+  --tb-bg: #FAFAFA;
+  --tb-surface: #FFFFFF;
+  --tb-border: #E5E7EB;
+  --tb-ink: #111827;
+  --tb-muted: #4B5563;
+  --tb-font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --tb-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--tb-bg);
+  color: var(--tb-ink);
+  font-family: var(--tb-font-sans);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--tb-bg);
+  color: var(--tb-ink);
+  min-height: 100vh;
+  overflow-x: clip;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Typography Pairing */
+.font-editorial {
+  font-family: var(--tb-font-serif);
+  font-optical-sizing: auto;
+}
+
+.font-ui {
+  font-family: var(--tb-font-sans);
+}
+
+/* Signature Gradient Utilities (Controlled Placement) */
+.bg-signature-gradient {
+  background: var(--tb-gradient-main);
+  color: var(--tb-ink);
+}
+
+.bg-signature-soft {
+  background: var(--tb-gradient-soft);
+  color: var(--tb-ink);
+}
+
+.bg-signature-subtle {
+  background: var(--tb-gradient-subtle);
+  color: var(--tb-ink);
+}
+
+.btn-accent-gradient {
+  background: var(--tb-gradient-main);
+  color: var(--tb-ink);
+  font-weight: 600;
+  transition: filter 180ms ease, transform 160ms ease, box-shadow 180ms ease;
+}
+
+.btn-accent-gradient:hover {
+  filter: brightness(0.97);
+  box-shadow: 0 2px 8px rgba(17, 24, 39, 0.08);
+}
+
+.btn-accent-gradient:active {
+  transform: translateY(1px);
+}
+
+/* Editorial Book Card & Cover Realism */
+.book-card {
+  background-color: var(--tb-surface);
+  border: 1px solid var(--tb-border);
+  transition: border-color 200ms ease, transform 220ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 220ms ease;
+}
+
+.book-card:hover {
+  border-color: #CBD5E1;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px -10px rgba(17, 24, 39, 0.08);
+}
+
+.book-cover-frame {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  box-shadow:
+    0 1px 2px rgba(17, 24, 39, 0.08),
+    0 8px 18px -6px rgba(17, 24, 39, 0.14);
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease;
+}
+
+.book-card:hover .book-cover-frame {
+  transform: translateY(-2px);
+  box-shadow:
+    0 2px 4px rgba(17, 24, 39, 0.09),
+    0 14px 24px -8px rgba(17, 24, 39, 0.18);
+}
+
+/* Subtle book spine crease & paper edge highlight */
+.book-cover-spine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(0, 0, 0, 0.14) 3.5%,
+    rgba(255, 255, 255, 0.14) 5.5%,
+    rgba(0, 0, 0, 0) 11%,
+    rgba(0, 0, 0, 0) 97%,
+    rgba(0, 0, 0, 0.08) 100%
+  );
+}
+
+/* Filter Pill Scrollbar Cleanliness */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Modal Transitions */
+.modal-backdrop {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+
+.modal-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-panel {
+  opacity: 0;
+  transform: translateY(12px) scale(0.985);
+  transition: opacity 220ms ease, transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.modal-backdrop.is-open .modal-panel {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Editorial Reader Typography */
+.reader-prose {
+  font-family: var(--tb-font-serif);
+  color: #1F2937;
+  max-width: 65ch;
+}
+
+.reader-prose p {
+  margin-bottom: 1.35em;
+  text-align: left;
+}
+
+.reader-prose p:first-of-type::first-letter {
+  font-family: var(--tb-font-serif);
+  float: left;
+  font-size: 3.1em;
+  line-height: 0.85;
+  padding-right: 0.14em;
+  padding-top: 0.06em;
+  font-weight: 600;
+  color: #111827;
+}
+
+.reader-size-sm {
+  font-size: 0.98rem;
+  line-height: 1.78;
+}
+
+.reader-size-md {
+  font-size: 1.125rem;
+  line-height: 1.85;
+}
+
+.reader-size-lg {
+  font-size: 1.28rem;
+  line-height: 1.9;
+}
+
+/* Toast Notification Animation */
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toastFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.toast-enter {
+  animation: toastSlideIn 220ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.toast-exit {
+  animation: toastFadeOut 180ms ease forwards;
+}
+
+/* QRIS Frame Gradient Border */
+.qris-gradient-frame {
+  background: var(--tb-gradient-main);
+  padding: 3px;
+  border-radius: 1rem;
+}
+
+/* Subtle Fade In for Catalog Updates */
+@keyframes subtleFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: subtleFadeUp 240ms ease both;
+}
+
+/* Spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.tb-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #FFFFFF;
+  border-radius: 9999px;
+  animation: spin 650ms linear infinite;
+}
+
+/* Focus Ring Accessibility */
+:focus-visible {
+  outline: 2px solid #9FA5D5;
+  outline-offset: 2px;
+}
+
+/* Line Clamp Utilities */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   Editorial Opening Preloader (Logo + Nama Web TitikBaca)
+   ========================================================================== */
+html.tb-skip-splash #tb-preloader {
+  display: none !important;
+}
+
+#tb-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FAFAFA;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(159, 165, 213, 0.16) 0%, transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(254, 215, 184, 0.22) 0%, transparent 48%);
+  transition: opacity 460ms cubic-bezier(0.22, 1, 0.36, 1), transform 460ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#tb-preloader.is-leaving {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
+@keyframes tbLogoEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes tbWordmarkEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tbProgressFill {
+  0% {
+    transform: scaleX(0);
+  }
+  65% {
+    transform: scaleX(0.78);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+.tb-loader-logo {
+  animation: tbLogoEnter 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.tb-loader-wordmark {
+  animation: tbWordmarkEnter 520ms cubic-bezier(0.22, 1, 0.36, 1) 120ms both;
+}
+
+.tb-loader-sub {
+  animation: tbWordmarkEnter 520ms cubic-bezier(0.22, 1, 0.36, 1) 200ms both;
+}
+
+.tb-loader-bar-fill {
+  background: var(--tb-gradient-main);
+  transform-origin: left center;
+  animation: tbProgressFill 1150ms cubic-bezier(0.25, 0.9, 0.35, 1) 140ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tb-loader-logo,
+  .tb-loader-wordmark,
+  .tb-loader-sub,
+  .tb-loader-bar-fill {
+    animation-duration: 200ms;
+    animation-delay: 0ms;
+  }
+}
+
+/* ==========================================================================
+   Payment Verification & Success Loading Overlay (checkout.html)
+   ========================================================================== */
+.tb-pay-ring {
+  width: 76px;
+  height: 76px;
+  border-radius: 9999px;
+  border: 3px solid #E5E7EB;
+  border-top-color: #9FA5D5;
+  border-right-color: #FED7B8;
+  animation: spin 850ms linear infinite;
+}
+
+@keyframes tbCheckPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes tbCheckDraw {
+  from {
+    stroke-dashoffset: 36;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.tb-pay-success-badge {
+  animation: tbCheckPop 360ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.tb-pay-check-path {
+  stroke-dasharray: 36;
+  stroke-dashoffset: 36;
+  animation: tbCheckDraw 380ms cubic-bezier(0.22, 1, 0.36, 1) 120ms forwards;
+}
+
+.tb-pay-progress-fill {
+  background: var(--tb-gradient-main);
+  transition: width 750ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
